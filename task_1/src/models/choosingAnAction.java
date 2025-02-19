@@ -12,13 +12,15 @@ public class choosingAnAction {
         // Выполняем деление и умножение в одном проходе
         for (int i = 0; i < input.length(); i++) {
             switch (input.charAt(i)) {
-                case ':' -> {
-                    IntegerDivision.integerDivision(input);
-                    i = -1; // Перезапускаем проход
-                }
                 case '/' -> {
-                    new Division().division(input);
-                    i = -1;
+                    if (i + 1 < input.length() && input.charAt(i + 1) == '/') {
+                        input.replace(i, i + 2, ":");
+                        IntegerDivision.integerDivision(input);
+                        i = -1;
+                    } else {
+                        new Division().division(input);
+                        i = -1;
+                    }
                 }
                 case '*' -> {
                     Multiplication.multiplication(input);

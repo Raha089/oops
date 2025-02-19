@@ -5,7 +5,11 @@ import java.util.regex.Pattern;
 public class choosingAnAction {
     public void choosingAnAction(StringBuilder input) {
         // Выполняем операции с самым высоким приоритетом
-        while (input.indexOf("^") != -1) {
+         int index = 0;
+        while (input.indexOf("^") != -1 || (index = input.indexOf("**")) != -1) {
+            if (input.indexOf("**") != -1){
+                input.replace(index, index + 2, "^");
+            }
             Degree.degree(input);
         }
 
@@ -16,13 +20,15 @@ public class choosingAnAction {
                     Factorial.faсtorial(input);
                     i = -1; // Перезапускаем проход
                 }
-                case ':' -> {
-                    IntegerDivision.integerDivision(input);
-                    i = -1; // Перезапускаем проход
-                }
                 case '/' -> {
-                    new Division().division(input);
-                    i = -1;
+                    if (i + 1 < input.length() && input.charAt(i + 1) == '/') {
+                        input.replace(i, i + 2, ":");
+                        IntegerDivision.integerDivision(input);
+                        i = -1;
+                    } else {
+                        new Division().division(input);
+                        i = -1;
+                    }
                 }
                 case '*' -> {
                     Multiplication.multiplication(input);
