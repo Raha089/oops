@@ -31,13 +31,13 @@ public class Summation {
 
                 result = num1.add(num2);
 
-                // Записываем результат как строку без изменения точности
-                String resultString = result.toPlainString();
-                //System.out.println(resultString);
 
-                // Заменяем результат в строке на отформатированное значение
+                String resultString = result.toPlainString();
+
+
+
                 input.replace(start, end, resultString);
-                i = 0;  // Перезапускаем цикл, чтобы учесть новые изменения в строке
+                i = 0;
             }
         }
         RecursionPath.recursionPath(input);
