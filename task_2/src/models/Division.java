@@ -5,8 +5,6 @@ import java.util.regex.Pattern;
 
 public class Division {
     public void division(StringBuilder input) {
-
-        double result;
         int start, end;
         for (int i = 0; i < input.length(); ++i) {
             if (input.charAt(0) == '/' || input.charAt(input.length() - 1) == '/') {
@@ -16,23 +14,24 @@ public class Division {
                 start = i - 1;
                 end = i + 1;
 
-                while (Pattern.matches("[0-9.0-9]", Character.toString(input.charAt(start))) && start > 0) start -= 1;
+                while (start > 0 && Pattern.matches("[0-9.]", Character.toString(input.charAt(start)))) start--;
+                if (start > 0 && !Pattern.matches("[0-9.]", Character.toString(input.charAt(start)))) start++;
 
-                if (start > 0 && Pattern.matches("[0-9.0-9]", Character.toString(input.charAt(start - 1)))) start += 1;
+                if (input.charAt(end) == '-' && !Pattern.matches("[0-9.]", Character.toString(input.charAt(end - 1))))
+                    end++;
+                while (end < input.length() && Pattern.matches("[0-9.]", Character.toString(input.charAt(end))))
+                    end++;
 
+                BigDecimal num1 = new BigDecimal(input.substring(start, i));
+                BigDecimal num2 = new BigDecimal(input.substring(i + 1, end));
 
-                if (input.charAt(end) == '-' && !Pattern.matches("[0-9.0-9]", Character.toString(input.charAt(end - 1))))
-                    end += 1;
+                if (num2.compareTo(BigDecimal.ZERO) == 0) {
+                    System.out.println("Ошибка: деление на ноль");
+                    break;
+                }
 
-                while (end < input.length() && Pattern.matches("[0-9.0-9]", Character.toString(input.charAt(end))))
-                    end += 1;
-
-                result = Double.parseDouble(input.substring(start, i)) / Double.parseDouble(input.substring(i + 1, end));
-                System.out.println(Double.toString(result));
-                System.out.println(end);
-                input.replace(start, end, Double.toString(result));
-                System.out.println(input.replace(start, end, Double.toString(result)));
-
+                BigDecimal result = num1.divide(num2, 15, BigDecimal.ROUND_HALF_UP);
+                input.replace(start, end, result.stripTrailingZeros().toPlainString());
                 i = 0;
             }
         }

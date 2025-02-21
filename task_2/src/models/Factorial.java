@@ -12,16 +12,13 @@ public class Factorial {
             if (input.charAt(i) == '!') {
                 start = i - 1;
 
-                // Найдем начало числа
                 while (start > 0 && Pattern.matches("[0-9]", Character.toString(input.charAt(start - 1)))) {
                     start--;
                 }
 
-                // Получаем число
                 String numberStr = input.substring(start, i);
                 BigDecimal number = new BigDecimal(numberStr);
 
-                // Проверяем, является ли число целым и неотрицательным
                 if (number.scale() > 0) {
                     throw new IllegalArgumentException("Факториал определен только для целых чисел.");
                 }
@@ -30,15 +27,13 @@ public class Factorial {
                     throw new IllegalArgumentException("Факториал определен только для неотрицательных чисел.");
                 }
 
-                // Вычисляем факториал
                 BigInteger factorial = BigInteger.ONE;
                 for (BigInteger j = BigInteger.ONE; j.compareTo(intNumber) <= 0; j = j.add(BigInteger.ONE)) {
                     factorial = factorial.multiply(j);
                 }
 
-                // Заменяем в строке
                 input.replace(start, i + 1, factorial.toString());
-                i = 0; // Перезапускаем цикл
+                i = 0;
             }
         }
         RecursionPath.recursionPath(input);
